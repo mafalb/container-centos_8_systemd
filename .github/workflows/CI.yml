@@ -42,9 +42,9 @@ jobs:
       PY_COLORS: 1
       ANSIBLE_FORCE_COLOR: 1
  
-    defaults:
-      run:
-        working-directory: ansible_collections/docker-images/centos-8
+#    defaults:
+#      run:
+#        working-directory: ansible_collections/docker-images/centos-8
 
     steps:
 
