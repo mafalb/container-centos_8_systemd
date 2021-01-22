@@ -1,0 +1,13 @@
+# vim: set ft=yaml ts=2 expandtab:
+---
+
+- name: converge centos-8
+  hosts: all
+
+  tasks:
+
+  - name: the container is working
+    assert:
+      that: true
+
+...
