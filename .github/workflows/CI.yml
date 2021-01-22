@@ -1,0 +1,65 @@
+# vim: set ft=yaml ts=2 expandtab:
+---
+
+name: CI
+
+on:
+
+  push:
+    branches:
+    - '**'
+    tags-ignore:
+    - '*'
+
+  schedule:
+    - cron: '40 11 * * 6'
+
+jobs:
+
+  CI:
+
+    runs-on: ubuntu-20.04
+
+    strategy:
+
+      fail-fast: false
+
+      matrix:
+
+        target:
+        - centos8
+
+        include:
+
+        - target: centos8
+          distribution: centos
+          version: 8
+
+    env:
+      
+      CI_CONTAINER_IMAGE: ${{ matrix.distribution }}
+      CI_CONTAINER_TAG: ${{ matrix.version }}
+      PY_COLORS: 1
+      ANSIBLE_FORCE_COLOR: 1
+ 
+    defaults:
+      run:
+        working-directory: ansible_collections/docker-images/centos-8
+
+    steps:
+
+    - name: checkout
+      uses: actions/checkout@v2
+
+    - name: install dependencies
+      run: ansible-galaxy collection install -r molecule/requirements.yml
+
+    - name: install molecule
+      run: ansible-playbook -D molecule/install_molecule.yml -e molecule_ansible_version=${{ matrix.ansible_version }} -t all,debug
+
+    - name: molecule tests
+      run: |
+        source ~/.virtualenvs/molecule/bin/activate
+        molecule test
+
+...
