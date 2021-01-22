@@ -51,6 +51,11 @@ jobs:
     - name: checkout
       uses: actions/checkout@v2
 
+    - name: ls
+      run: |
+        pwd
+        ls -lR
+
     - name: install dependencies
       run: ansible-galaxy collection install -r molecule/requirements.yml
 
