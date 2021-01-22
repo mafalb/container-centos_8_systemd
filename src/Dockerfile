@@ -21,14 +21,6 @@ STOPSIGNAL SIGRTMIN+3
 
 ENV container docker
 
-{% if item.env is defined %}
-{% for var, value in item.env.items() %}
-{% if value %}
-ENV {{ var }} {{ value }}
-{% endif %}
-{% endfor %}
-{% endif %}
-
 RUN touch /var/lib/rpm/* && yum makecache && yum --assumeyes install python3 sudo which systemd iproute
 
 RUN if test -d /lib/systemd/system/sysinit.target.wants/ ; then (cd /lib/systemd/system/sysinit.target.wants/; for i in *; do [ $i == systemd-tmpfiles-setup.service ] || rm -f $i; done);\
